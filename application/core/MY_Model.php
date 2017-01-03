@@ -44,7 +44,7 @@ class MY_Model extends CI_Model {
 			$query = $this->db->get($this->table);
 
 			if($query->num_rows() > 0){
-				$data = $query->row_array();
+				$data = $query->result_array();
 				return $data;
 			}
 
