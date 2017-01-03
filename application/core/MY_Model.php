@@ -41,25 +41,37 @@ class MY_Model extends CI_Model {
 
 	public function selectData(){
 		try {
-			$query = $this->db->get($this->table)->result_array();
+			$query = $this->db->get($this->table);
+
+			if($query->num_rows() > 0){
+				$data = $query->row_array();
+				return $data;
+			}
+
+			return false;
 
 		} catch (Exception $e) {
 			return false;
 		}
 
-		return $query;
+		
 	}
 
 	public function selectById($field,$value){
 		try {
 			$this->db->where($field,$value);
-			$query = $this->db->get($this->table)->row_array();
+			$query = $this->db->get($this->table);
+
+			if($query->num_rows() > 0){
+				$data = $query->row_array();
+				return $data;
+			}
+
+			return false;
 
 		} catch (Exception $e) {
 			return false;
 		}
-
-		return $query;
 	}
 
 	public function deleteData($field,$value){

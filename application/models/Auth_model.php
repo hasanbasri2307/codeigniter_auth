@@ -19,46 +19,24 @@ class Auth_model extends MY_Model {
 
 	public function getAuth($username,$password){
 		try {
-			//check available username
-			if($this->checkUsername($username) == 0){
-				return false;
-			}
-
-			if($this->checkPassword($password) == 0){
-				return false;
-			}
 
 			$this->db->where($this->field_username,$username);
-			$this->db->where($this->field_password,$password);
-			$query = $this->db->get($this->table)->row_array();
-			
-			return $query;
+			$query = $this->db->get($this->table);
+
+			if($query->num_rows() > 0){
+				$data = $query->row_array();
+				if($data[$this->field_password] != $password){
+					return false;
+				}
+
+				return $data;
+			}
+
+			return false;
 
 		} catch (Exception $e) {
 			return false;
 		}
-	}
-
-	private function checkUsername($username){
-		try {
-			$this->db->where($this->field_username,$username);
-			$query = $this->db->count_all_results($this->table);
-		} catch (Exception $e) {
-			return false;
-		}
-
-		return $query;
-	}
-
-	private function checkPassword($password){
-		try {
-			$this->db->where($this->field_password,$password);
-			$query = $this->db->count_all_results($this->table);
-		} catch (Exception $e) {
-			return false;
-		}
-
-		return $query;
 	}
 
 }
